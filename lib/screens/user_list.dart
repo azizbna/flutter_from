@@ -1,6 +1,9 @@
 // user_list_page.dart
 
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../main.dart';
 import '../models/user_info.dart';
@@ -37,6 +40,28 @@ class _UserListPageState extends State<UserListPage> {
       ),
     );
   }
+  void _saveUsersAsJSON() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/users.json');
+      final jsonUsers = users.map((user) => user.toJson()).toList();
+      await file.writeAsString(jsonEncode(jsonUsers));
+
+      // Display a toast message with the location
+      final location = file.path;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Users saved to: $location'),
+        duration: Duration(seconds: 3),
+      ));
+    } catch (e) {
+      // Handle any potential errors
+      print('Error while saving users: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Failed to save users'),
+        duration: Duration(seconds: 3),
+      ));
+    }
+  }
 
 
   @override
@@ -44,6 +69,14 @@ class _UserListPageState extends State<UserListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Liste des Utilisateurs'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              _saveUsersAsJSON();
+            },
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: users.length,
@@ -56,7 +89,18 @@ class _UserListPageState extends State<UserListPage> {
             elevation: 4,
             margin: EdgeInsets.all(8),
             child: ListTile(
-              title: Text('${user.nom} ${user.prenom}'),
+              title: Text(
+                '${user.civilite} ${user.nom} ${user.prenom}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Text(
+                'Spécialité: ${user.specialite}',
+                style: TextStyle(
+                  color: Colors.grey, // Secondary color for specialty
+                ),
+              ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

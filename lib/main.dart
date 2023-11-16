@@ -1,13 +1,40 @@
 // main.dart
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
+
 import 'package:formproj/screens/info_page.dart';
 import 'package:formproj/screens/user_list.dart';
 import 'models/user_info.dart';
 
-void main() {
+void main() async{
+  // Initialize Flutter
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load users from JSON file
+  await loadUsersFromJSON();
+
   runApp(const MyApp());
 }
+Future<void> loadUsersFromJSON() async {
+  try {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/users.json');
 
+    if (await file.exists()) {
+      final contents = await file.readAsString();
+      final decodedUsers = jsonDecode(contents) as List;
+      users = decodedUsers.map((userJson) => UserInfo.fromJson(userJson)).toList();
+    } else {
+      // File not found, keep users list as empty
+      users = [];
+    }
+  } catch (e) {
+    // Handle any potential errors
+    print('Error while loading users: $e');
+  }
+}
 List<UserInfo> users = [];
 
 class MyApp extends StatelessWidget {
