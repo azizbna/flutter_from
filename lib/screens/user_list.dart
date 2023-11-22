@@ -1,14 +1,15 @@
 // user_list_page.dart
 
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-
 import '../main.dart';
+<<<<<<< Updated upstream
 import '../models/database_helper.dart';
+=======
+import '../models/api_helper.dart';
+>>>>>>> Stashed changes
 import '../models/user_info.dart';
 import 'info_page.dart';
+import 'dart:convert';
 class UserListPage extends StatefulWidget {
   @override
   _UserListPageState createState() => _UserListPageState();
@@ -16,6 +17,10 @@ class UserListPage extends StatefulWidget {
 
 class _UserListPageState extends State<UserListPage> {
   List<UserInfo> users = [];
+<<<<<<< Updated upstream
+=======
+  ApiHelper apiHelper = ApiHelper();
+>>>>>>> Stashed changes
 
   @override
   void initState() {
@@ -24,6 +29,7 @@ class _UserListPageState extends State<UserListPage> {
   }
 
   void _loadUsers() async {
+<<<<<<< Updated upstream
     final users = await DatabaseHelper.instance.queryAllUsers();
     setState(() {
       this.users = users.map((user) {
@@ -37,6 +43,35 @@ class _UserListPageState extends State<UserListPage> {
         );
       }).toList();
     });
+=======
+    try {
+      final List<UserInfo> response = await apiHelper.getAllUsers();
+
+      setState(() {
+        this.users = response;
+      });
+    } catch (e) {
+      print('Failed to load users: $e');
+    }
+  }
+
+  void _deleteUser(int index) async {
+    if (index >= 0 && index < users.length) {
+      final userToDelete = users[index];
+      print(userToDelete.toString());
+      setState(() {
+        users.removeAt(index);
+      });
+
+      if (userToDelete.id != null) {
+        try {
+          await apiHelper.deleteUser(userToDelete.id);
+        } catch (e) {
+          print('Failed to delete user: $e');
+        }
+      }
+    }
+>>>>>>> Stashed changes
   }
   void _deleteUser(int index) async {
     if (index >= 0 && index < users.length) {
@@ -53,6 +88,7 @@ class _UserListPageState extends State<UserListPage> {
   }
 
   void _editUser(UserInfo user) {
+<<<<<<< Updated upstream
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -72,6 +108,41 @@ class _UserListPageState extends State<UserListPage> {
       ),
     );
   }
+=======
+    if (user.id != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyHomePage(
+            user: user,
+            onEdit: (editedUser) async {
+              try {
+                // Update the edited user in the userList
+                int index = users.indexWhere((u) => u.id == user.id);
+                if (index != -1) {
+                  setState(() {
+                    users[index] = editedUser;
+                  });
+                }
+
+                // Update the user in the API
+                await apiHelper.updateUser(editedUser);
+              } catch (e) {
+                print('Failed to edit user: $e');
+              }
+
+              Navigator.pop(context); // Close the form
+            },
+          ),
+        ),
+      );
+    } else {
+      // Handle the case where user.id is null
+      print('User ID is null');
+    }
+  }
+
+>>>>>>> Stashed changes
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +152,12 @@ class _UserListPageState extends State<UserListPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.save),
+<<<<<<< Updated upstream
             onPressed: () {
             },
+=======
+            onPressed: () {},
+>>>>>>> Stashed changes
           ),
         ],
       ),

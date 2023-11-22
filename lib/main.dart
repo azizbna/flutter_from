@@ -6,18 +6,26 @@ import 'package:flutter/material.dart';
 
 import 'package:formproj/screens/info_page.dart';
 import 'package:formproj/screens/user_list.dart';
+<<<<<<< Updated upstream
 import 'models/database_helper.dart';
+=======
+import 'models/api_helper.dart';
+>>>>>>> Stashed changes
 import 'models/user_info.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+<<<<<<< Updated upstream
   await DatabaseHelper.instance.database; // Initialize the database
   await DatabaseHelper.instance.initDatabase(); // Add this line
+=======
+>>>>>>> Stashed changes
   //await DatabaseHelper.instance.clearDatabase();
   runApp(const MyApp());
 }
 
 List<UserInfo> users = [];
+ApiHelper apiHelper = ApiHelper();
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -331,11 +339,22 @@ class _MyHomePageState extends State<MyHomePage> {
       specialite: specialite ?? '',
       matieres: matieres,
     );
+<<<<<<< Updated upstream
     print('User to be saved: $user');
     final db = await DatabaseHelper.instance.database;
     int result = await db?.insert(DatabaseHelper.table, user.toMap()) ?? 0;
     print('Insert result: $result');
     print('User saved: $user');
+=======
+
+    try {
+      int? result = await apiHelper.createUser(user);
+      print('User saved with ID: $result');
+      _clearForm();
+    } catch (e) {
+      print('Failed to save user: $e');
+    }
+>>>>>>> Stashed changes
   }
 
   Future<void> _clearForm() async {
