@@ -5,7 +5,6 @@ import 'user_info.dart';
 class ApiHelper {
   final String baseUrl = 'https://655e8107879575426b4398a4.mockapi.io/api/usersinfo';
 
-
   Future<List<UserInfo>> getAllUsers() async {
     final response = await http.get(Uri.parse(baseUrl));
 
@@ -37,11 +36,15 @@ class ApiHelper {
     }
   }
 
-  Future<int?> updateUser(UserInfo user) async {
-    print("UPDATING "+ user.id.toString());
+  Future<int?> updateUser(UserInfo user,String? id) async {
+    print("UPDATING "+ id.toString());
+    print(user.toString());
+    user.id = id;
+    print(user.toString());
     final response = await http.put(
-      Uri.parse('$baseUrl/${user.id}'),
+      Uri.parse('$baseUrl/${id}'),
       headers: {'Content-Type': 'application/json'},
+
       body: jsonEncode(user.toMap()),
     );
 

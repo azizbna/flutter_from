@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'database_helper.dart';
-
 class UserInfo {
   String? id;
   String? civilite;
@@ -30,14 +26,12 @@ class UserInfo {
     };
   }
 
-  // Create a method to create a UserInfo object from a map
   factory UserInfo.fromMap(Map<String, dynamic> map) {
     var matieres = map['matieres'];
 
     if (matieres is List) {
-      // 'matieres' is already a List
       return UserInfo(
-        id: map['id'].toString(), // Ensure id is converted to String
+        id: map['id'].toString(),
         civilite: map['civilite'],
         nom: map['nom'],
         prenom: map['prenom'],

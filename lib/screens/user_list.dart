@@ -60,20 +60,16 @@ class _UserListPageState extends State<UserListPage> {
             user: user,
             onEdit: (editedUser) async {
               try {
-                // Update the edited user in the userList
                 int index = users.indexWhere((u) => u.id == user.id);
                 if (index != -1) {
                   setState(() {
                     users[index] = editedUser;
                   });
                 }
-
-                // Update the user in the API
-                await apiHelper.updateUser(editedUser);
+                await apiHelper.updateUser(editedUser,user.id);
               } catch (e) {
                 print('Failed to edit user: $e');
               }
-
               Navigator.pop(context); // Close the form
             },
           ),

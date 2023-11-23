@@ -11,7 +11,6 @@ import 'models/user_info.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //await DatabaseHelper.instance.clearDatabase();
   runApp(const MyApp());
 }
 
@@ -107,8 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             _buildCiviliteField(),
             _buildTextField('Nom', (value) => nom = value, nomController),
-            _buildTextField(
-                'Prénom', (value) => prenom = value, prenomController),
+            _buildTextField('Prénom', (value) => prenom = value, prenomController),
             _buildDropdownField('Spécialité', specialite, specialiteOptions,
                     (value) {
                   setState(() {
@@ -120,7 +118,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: () {
                 if (widget.user != null) {
-                  // Editing mode: update the user
                   UserInfo editedUser = UserInfo(
                     civilite: civilite,
                     nom: nom,
@@ -130,7 +127,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                   widget.onEdit(editedUser);
                 } else {
-
                   _saveUser().then((result) {
                     _clearForm();
                   });
