@@ -3,11 +3,7 @@ import 'dart:convert';
 import 'database_helper.dart';
 
 class UserInfo {
-<<<<<<< Updated upstream
-  int? id; // Add this 'id' field
-=======
-  String? id; // Add this 'id' field
->>>>>>> Stashed changes
+  String? id;
   String? civilite;
   String nom;
   String prenom;
@@ -15,11 +11,7 @@ class UserInfo {
   List<String> matieres;
 
   UserInfo({
-<<<<<<< Updated upstream
-    this.id, // Include 'id' in the constructor
-=======
     this.id,
->>>>>>> Stashed changes
     this.civilite,
     required this.nom,
     required this.prenom,
@@ -40,17 +32,6 @@ class UserInfo {
 
   // Create a method to create a UserInfo object from a map
   factory UserInfo.fromMap(Map<String, dynamic> map) {
-<<<<<<< Updated upstream
-    var matieres = (map['matieres'] as String).split(', ');
-    return UserInfo(
-      id: map['id'], // Include 'id' in the factory constructor
-      civilite: map['civilite'],
-      nom: map['nom'],
-      prenom: map['prenom'],
-      specialite: map['specialite'],
-      matieres: matieres,
-    );
-=======
     var matieres = map['matieres'];
 
     if (matieres is List) {
@@ -76,7 +57,6 @@ class UserInfo {
     } else {
       throw Exception("Invalid 'matieres' format");
     }
->>>>>>> Stashed changes
   }
   @override
   String toString() {
